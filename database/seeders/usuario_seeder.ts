@@ -18,6 +18,8 @@ export default class extends BaseSeeder {
       email,
       senha: faker.internet.password(),
       username: [...uniqueUsernames][index],
+      ddd: Math.ceil(Math.random() * 10) < 7 ? '(61)' : '(62)',
+      telefone: `9${faker.string.numeric(4)}-${faker.string.numeric(4)}`,
       enderecoId: index + 1,
     }))
 
@@ -25,6 +27,8 @@ export default class extends BaseSeeder {
       email: 'usuarioteste@email.com',
       senha: env.get('USUARIO_TESTE_PASSWORD'),
       username: 'usuario',
+      ddd: '(61)',
+      telefone: '99123-4567',
       enderecoId: 1,
     })
     await Usuario.createMany(usersData)

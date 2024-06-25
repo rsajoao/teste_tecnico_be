@@ -17,14 +17,20 @@ export default class Usuario extends BaseModel {
   @column({ serializeAs: null })
   declare senha: string
 
+  @column()
+  declare enderecoId: number | undefined
+
+  @column()
+  declare ddd: string
+  
+  @column()
+  declare telefone: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @column()
-  public enderecoId: number | undefined
 
   @belongsTo(() => Endereco, {
     foreignKey: 'enderecoId',

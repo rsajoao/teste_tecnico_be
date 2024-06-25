@@ -1,6 +1,5 @@
 import Endereco from '#models/Endereco'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
-import { faker } from '@faker-js/faker'
 
 export default class extends BaseSeeder {
   async run() {
