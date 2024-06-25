@@ -9,11 +9,11 @@ export default class Usuario extends BaseModel {
   @column()
   declare email: string
 
-  @column({ serializeAs: null })
-  declare senha: string
-
   @column()
   declare username: string
+
+  @column({ serializeAs: null })
+  declare senha: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

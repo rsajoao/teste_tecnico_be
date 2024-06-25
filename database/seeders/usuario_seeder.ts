@@ -1,6 +1,7 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Usuario from '#models/Usuario'
 import { faker } from '@faker-js/faker'
+import env from '#start/env'
 
 export default class extends BaseSeeder {
   async run() {
@@ -8,10 +9,9 @@ export default class extends BaseSeeder {
     const uniqueUsernames = new Set<string>()
 
     while (uniqueEmails.size < 50) {
-      uniqueEmails.add(faker.internet.email())
-    }
-    while (uniqueUsernames.size < 50) {
-      uniqueUsernames.add(faker.internet.userName())
+      const email: string = faker.internet.email().toLowerCase()
+      uniqueEmails.add(email)
+      uniqueUsernames.add(email.split("@")[0])
     }
 
     const usersData = [...uniqueEmails].map((email, index) => ({
@@ -21,9 +21,9 @@ export default class extends BaseSeeder {
     }))
 
     await Usuario.create({
-      email: 'admin@admin.com',
-      senha: 'ehehe123',
-      username: 'admin',
+      email: 'usuarioteste@email.com',
+      senha: env.get('USUARIO_TESTE_PASSWORD'),
+      username: 'usuario',
     })
     await Usuario.createMany(usersData)
   }
