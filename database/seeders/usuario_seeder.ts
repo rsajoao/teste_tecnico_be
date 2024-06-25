@@ -11,19 +11,21 @@ export default class extends BaseSeeder {
     while (uniqueEmails.size < 50) {
       const email: string = faker.internet.email().toLowerCase()
       uniqueEmails.add(email)
-      uniqueUsernames.add(email.split("@")[0])
+      uniqueUsernames.add(email.split('@')[0])
     }
 
     const usersData = [...uniqueEmails].map((email, index) => ({
       email,
       senha: faker.internet.password(),
       username: [...uniqueUsernames][index],
+      enderecoId: index + 1,
     }))
 
     await Usuario.create({
       email: 'usuarioteste@email.com',
       senha: env.get('USUARIO_TESTE_PASSWORD'),
       username: 'usuario',
+      enderecoId: 1,
     })
     await Usuario.createMany(usersData)
   }

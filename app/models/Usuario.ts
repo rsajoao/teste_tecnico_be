@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, column } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeSave, belongsTo, column } from '@adonisjs/lucid/orm'
 import hash from '@adonisjs/core/services/hash'
+import Endereco from './Endereco.js'
+import * as relations from '@adonisjs/lucid/types/relations'
 
 export default class Usuario extends BaseModel {
   @column({ isPrimary: true })
@@ -20,6 +22,14 @@ export default class Usuario extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @column()
+  public enderecoId: number | undefined
+
+  @belongsTo(() => Endereco, {
+    foreignKey: 'enderecoId',
+  })
+  declare endereco: relations.BelongsTo<typeof Endereco>
 
   @beforeSave()
   public static async hashPassword(user: Usuario) {
