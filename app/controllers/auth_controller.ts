@@ -21,7 +21,6 @@ export default class AuthController {
     } catch (error) {
       return response.status(500).json({
         erro: 'o usuário não foi cadastrado',
-        message: error.message
       })
     }
   }
