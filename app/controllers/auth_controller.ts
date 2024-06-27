@@ -1,22 +1,21 @@
 import Usuario from '#models/Usuario'
 import hash from '@adonisjs/core/services/hash'
 import { HttpContext } from '@adonisjs/core/http'
+import { novoUsuarioValidador } from '#validators/signup_validator'
 
 export default class AuthController {
   public async signup({ request, response }: HttpContext) {
-    const novoUsuario = request.only([
-      'email',
-      'senha',
-      'username',
-      'ddd',
-      'telefone',
-      'enderecoId',
-    ])
+    const novoUsuario = request.all()
+    const payload = await novoUsuarioValidador.validate(novoUsuario)
 
-    const senhaCriptografada = await hash.make(novoUsuario.senha)
+    const senhaCriptografada = await hash.make(payload.senha)
 
     try {
-      await Usuario.create({ ...novoUsuario, senha: senhaCriptografada })
+      await Usuario.create({
+        ...payload,
+        senha: senhaCriptografada,
+        enderecoId: Number(payload.enderecoId),
+      })
       return response.status(201).json({ message: 'usuário cadastrado com sucesso' })
     } catch (error) {
       return response.status(500).json({
