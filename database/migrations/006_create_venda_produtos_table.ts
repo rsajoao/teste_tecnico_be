@@ -10,8 +10,6 @@ export default class extends BaseSchema {
       table.integer('produto_id').unsigned().references('produtos.id').onDelete('CASCADE')
       table.integer('quantidade').notNullable()
       table.float('valor', 10, 2).notNullable()
-      table.timestamp('created_at', { useTz: true }).defaultTo(this.now()).notNullable()
-      table.timestamp('updated_at', { useTz: true }).defaultTo(this.now()).notNullable()
     })
   }
 

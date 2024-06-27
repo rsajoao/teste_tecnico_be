@@ -5,10 +5,10 @@ export default class Endereco extends BaseModel {
   declare id: number
 
   @column()
-  declare logradouro: string
+  declare clienteId: number
 
   @column()
-  declare bairro: string
+  declare logradouro: string
 
   @column()
   declare numero: string
@@ -17,11 +17,14 @@ export default class Endereco extends BaseModel {
   declare complemento: string | null
 
   @column()
+  declare bairro: string
+
+  @column()
   declare cidade: string
 
   @column()
-  declare uf: string
+  declare UF: string
 
   @column()
-  declare cep: string
+  declare CEP: string
 }

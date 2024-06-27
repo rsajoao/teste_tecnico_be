@@ -8,7 +8,7 @@ export default class Venda extends BaseModel {
   declare id: number
 
   @column()
-  declare usuarioId: number
+  declare clienteId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

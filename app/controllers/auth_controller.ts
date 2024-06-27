@@ -14,7 +14,6 @@ export default class AuthController {
       await Usuario.create({
         ...payload,
         senha: senhaCriptografada,
-        enderecoId: Number(payload.enderecoId),
       })
       return response.status(201).json({ message: 'usuário cadastrado com sucesso' })
     } catch (error) {
