@@ -8,9 +8,9 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('nome', 255).notNullable()
       table.string('sobrenome', 255).notNullable()
-      table.string('cpf', 13).notNullable().unique().index()
+      table.string('cpf', 14).notNullable().unique().index()
       table.string('ddd', 2).notNullable()
-      table.string('telefone', 9).notNullable()
+      table.string('telefone', 10).notNullable()
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now()).notNullable()
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now()).notNullable
     })
