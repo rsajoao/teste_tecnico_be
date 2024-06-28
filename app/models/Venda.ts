@@ -8,7 +8,7 @@ export default class Venda extends BaseModel {
   declare id: number
 
   @column()
-  declare usuarioId: number
+  declare clienteId: number
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -17,5 +17,5 @@ export default class Venda extends BaseModel {
   declare updatedAt: DateTime
 
   @hasMany(() => VendaProduto)
-  declare produtos: relations.HasMany<typeof VendaProduto>
+  declare produtosComprados: relations.HasMany<typeof VendaProduto>
 }

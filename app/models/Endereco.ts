@@ -5,16 +5,19 @@ export default class Endereco extends BaseModel {
   declare id: number
 
   @column()
-  declare logradouro: string
+  declare clienteId: number
 
   @column()
-  declare bairro: string
+  declare logradouro: string
 
   @column()
   declare numero: string
 
   @column()
   declare complemento: string | null
+
+  @column()
+  declare bairro: string
 
   @column()
   declare cidade: string
