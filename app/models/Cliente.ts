@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasMany, hasOne } from '@adonisjs/lucid/orm'
 import Endereco from './Endereco.js'
 import * as relations from '@adonisjs/lucid/types/relations'
+import Venda from './Venda.js'
 
 export default class Cliente extends BaseModel {
   @column({ isPrimary: true })
@@ -14,10 +15,10 @@ export default class Cliente extends BaseModel {
   declare sobrenome: string
 
   @column()
-  declare CPF: string
+  declare cpf: string
 
   @column()
-  declare DDD: string
+  declare ddd: string
 
   @column()
   declare telefone: string
@@ -30,4 +31,7 @@ export default class Cliente extends BaseModel {
 
   @hasOne(() => Endereco)
   declare endereco: relations.HasOne<typeof Endereco>
+
+  @hasMany(() => Venda)
+  declare vendas: relations.HasMany<typeof Venda>
 }

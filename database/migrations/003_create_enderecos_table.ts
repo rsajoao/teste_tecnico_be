@@ -17,8 +17,8 @@ export default class extends BaseSchema {
       table.string('complemento', 255)
       table.string('bairro', 255).notNullable()
       table.string('cidade', 255).notNullable().index()
-      table.string('UF', 2).notNullable().index()
-      table.string('CEP', 9).notNullable().index()
+      table.string('uf', 2).notNullable().index()
+      table.string('cep', 9).notNullable().index()
     })
   }
 

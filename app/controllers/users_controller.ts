@@ -3,7 +3,7 @@ import hash from '@adonisjs/core/services/hash'
 import { HttpContext } from '@adonisjs/core/http'
 import { novoUsuarioValidador } from '#validators/signup_validator'
 
-export default class AuthController {
+export default class UserController {
   public async signup({ request, response }: HttpContext) {
     const novoUsuario = request.all()
     const payload = await novoUsuarioValidador.validate(novoUsuario)

@@ -23,8 +23,8 @@ export default class Endereco extends BaseModel {
   declare cidade: string
 
   @column()
-  declare UF: string
+  declare uf: string
 
   @column()
-  declare CEP: string
+  declare cep: string
 }

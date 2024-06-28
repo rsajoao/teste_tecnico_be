@@ -1,12 +1,12 @@
 import router from '@adonisjs/core/services/router'
-import AuthController from '#controllers/auth_controller'
+import UserController from '#controllers/users_controller'
+import ClientesController from '#controllers/clientes_controller'
 
-const Auth = new AuthController()
+const User = new UserController()
+const Cliente = new ClientesController()
 
-router.get('/', async () => {
-  return {
-    ok: true,
-  }
-})
+router.get('/', async () => ({ ok: true }))
 
-router.post('/signup', Auth.signup)
+router.post('/signup', User.signup)
+router.get('/clientes', Cliente.listar)
+router.get('/clientes/show/:id', Cliente.show)

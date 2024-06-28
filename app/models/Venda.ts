@@ -17,5 +17,5 @@ export default class Venda extends BaseModel {
   declare updatedAt: DateTime
 
   @hasMany(() => VendaProduto)
-  declare produtos: relations.HasMany<typeof VendaProduto>
+  declare produtosComprados: relations.HasMany<typeof VendaProduto>
 }

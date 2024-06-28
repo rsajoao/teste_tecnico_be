@@ -19,8 +19,8 @@ export default class extends BaseSeeder {
         numero: numero(),
         complemento: complemento(),
         cidade: 'Brasília',
-        UF: 'DF',
-        CEP: CEP(),
+        uf: 'DF',
+        cep: CEP(),
         clienteId: i + 1,
       }
       enderecosData.push(endereco)

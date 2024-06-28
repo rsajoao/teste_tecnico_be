@@ -10,10 +10,10 @@ export default class extends BaseSeeder {
       const cliente = {
         nome: faker.person.firstName(),
         sobrenome: faker.person.lastName(),
-        CPF: Math.ceil(Math.random() * 99999999999)
+        cpf: Math.ceil(Math.random() * 99999999999)
           .toString()
           .padEnd(11, '0'),
-        DDD: Math.ceil(Math.random() * 99)
+        ddd: Math.ceil(Math.random() * 99)
           .toString()
           .padEnd(2, '0'),
         telefone:
