@@ -24,6 +24,9 @@ export default class ClientesController {
 
       const data = await Cliente.query()
         .where('id', clienteId)
+        .preload('endereco', (queryEndereco) => {
+          queryEndereco.select('logradouro', 'numero', 'complemento', 'bairro', 'cidade', 'uf', 'cep')
+        })
         .preload('vendas', (queryVenda) => {
           queryVenda.orderBy('createdAt', 'desc')
           if (mes && ano) {
@@ -40,6 +43,7 @@ export default class ClientesController {
         nome: data.nome,
         sobrenome: data.sobrenome,
         contato: `(${data.ddd})${data.telefone.slice(0, 5)}-${data.telefone.slice(5)}`,
+        endereco: data.endereco,
         compras: data.vendas.map((venda) => ({
           id: venda.id,
           data: new Date(venda.createdAt.toString()).toLocaleDateString('pt-BR', {
