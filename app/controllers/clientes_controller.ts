@@ -5,7 +5,7 @@ export default class ClientesController {
   public async listar({ response }: HttpContext) {
     try {
       const clientes = await Cliente.query()
-        .select('id', 'nome', 'sobrenome', 'DDD', 'telefone')
+        .select('id', 'nome', 'sobrenome', 'ddd', 'telefone')
         .orderBy('id', 'asc')
       return response.ok(clientes)
     } catch (error) {
@@ -38,7 +38,7 @@ export default class ClientesController {
         id: data.id,
         nome: data.nome,
         sobrenome: data.sobrenome,
-        contato: `(${data.ddd})${data.telefone}`,
+        contato: `(${data.ddd})${data.telefone.slice(0, 5)}-${data.telefone.slice(5)}`,
         compras: data.vendas.map((venda) => ({
           id: venda.id,
           data: new Date(venda.createdAt.toString()).toLocaleDateString('pt-BR', {
@@ -59,10 +59,7 @@ export default class ClientesController {
 
       return response.ok(cliente)
     } catch (error) {
-      return response.internalServerError({
-        erro: 'erro ao buscar cliente',
-        message: error.message,
-      })
+      return response.internalServerError({ erro: 'erro ao buscar cliente' })
     }
   }
 }
