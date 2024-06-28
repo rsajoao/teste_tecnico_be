@@ -1,8 +1,9 @@
 import Cliente from '#models/Cliente'
+import { atualizarClienteValidador, novoClienteValidador } from '#validators/cliente_validator'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ClientesController {
-  public async listar({ response }: HttpContext) {
+  public async list({ response }: HttpContext) {
     try {
       const clientes = await Cliente.query()
         .select('id', 'nome', 'sobrenome', 'ddd', 'telefone')
@@ -60,6 +61,46 @@ export default class ClientesController {
       return response.ok(cliente)
     } catch (error) {
       return response.internalServerError({ erro: 'erro ao buscar cliente' })
+    }
+  }
+
+  public async store({ request, response }: HttpContext) {
+    try {
+      const cliente = request.only(['nome', 'sobrenome', 'cpf', 'ddd', 'telefone'])
+      const payload = await novoClienteValidador.validate(cliente)
+      const novoCliente = await Cliente.create(payload)
+      return response.created(novoCliente)
+    } catch (error) {
+      return response.internalServerError({ erro: 'erro ao criar cliente' })
+    }
+  }
+
+  public async update({ params, request, response }: HttpContext) {
+    try {
+      const clienteId = params.id
+      const dados = request.only(['nome', 'sobrenome', 'cpf', 'ddd', 'telefone'])
+      const payload = await atualizarClienteValidador.validate(dados)
+
+      const cliente = await Cliente.findOrFail(clienteId)
+      cliente.merge(payload)
+      await cliente.save()
+
+      return response.ok(cliente)
+    } catch (error) {
+      return response.internalServerError({ erro: 'erro ao atualizar dados do cliente' })
+    }
+  }
+
+  public async delete({ params, response }: HttpContext) {
+    try {
+      const clienteId = params.id
+      const cliente = await Cliente.findOrFail(clienteId)
+
+      await cliente.delete()
+
+      return response.ok({ message: 'cliente removido do banco de dados' })
+    } catch (error) {
+      return response.internalServerError({ erro: 'erro ao remover cliente' })
     }
   }
 }
