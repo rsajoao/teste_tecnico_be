@@ -21,7 +21,7 @@ export const atualizarClienteValidador = vine.compile(
     sobrenome: vine.string().minLength(2).maxLength(128).toUpperCase().optional(),
     cpf: vine
       .string()
-      .maxLength(14)
+      .fixedLength(11)
       .transform(
         (cpf) => `${cpf.slice(0, 3)}.${cpf.slice(3, 6)}.${cpf.slice(6, 9)}-${cpf.slice(9)}`
       )

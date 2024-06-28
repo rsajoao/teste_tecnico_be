@@ -1,4 +1,5 @@
 import Produto from '#models/Produto'
+import { novoProdutoValidador } from '#validators/produto_validador'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ProdutosController {
@@ -11,6 +12,35 @@ export default class ProdutosController {
     } catch (error) {
       return response.internalServerError({
         erro: 'erro ao listar produtos',
+      })
+    }
+  }
+
+  public async show({ params, response }: HttpContext) {
+    try {
+      const produtoId = params.id
+      const produto = await Produto.query()
+        .where('id', produtoId)
+        .select('nome', 'qtdEstoque', 'valorUnitario')
+        .firstOrFail()
+      return response.ok(produto)
+    } catch (error) {
+      return response.internalServerError({ erro: 'erro ao buscar produto' })
+    }
+  }
+
+  public async store({ request, response }: HttpContext) {
+    try {
+      const produto = request.all()
+      const payloadProduto = await novoProdutoValidador.validate(produto)
+
+      const novoProduto = await Produto.create(payloadProduto)
+
+      return response.created(novoProduto)
+    } catch (error) {
+      return response.internalServerError({
+        erro: 'erro ao adicionar produto',
+        message: error.message,
       })
     }
   }

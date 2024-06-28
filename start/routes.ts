@@ -18,3 +18,5 @@ router.put('/clientes/update/:id', Cliente.update)
 router.delete('/clientes/delete/:id', Cliente.delete)
 
 router.get('/produtos', Produto.list)
+router.get('/produtos/show/:id', Produto.show)
+router.post('/produtos/store', Produto.store)
