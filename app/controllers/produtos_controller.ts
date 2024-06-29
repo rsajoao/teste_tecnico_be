@@ -1,5 +1,5 @@
 import Produto from '#models/Produto'
-import { novoProdutoValidador } from '#validators/produto_validador'
+import { novoProdutoValidador, atualizarProdutoValidador } from '#validators/produto_validador'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ProdutosController {
@@ -42,6 +42,24 @@ export default class ProdutosController {
         erro: 'erro ao adicionar produto',
         message: error.message,
       })
+    }
+  }
+
+  public async update({ params, request, response }: HttpContext) {
+    try {
+      const produtoId = params.id
+      const produtoAtualizado = request.only(['nome', 'qtdEstoque', 'valorUnitario'])
+      console.log(produtoAtualizado)
+
+      const payloadProduto = await atualizarProdutoValidador.validate(produtoAtualizado)
+
+      const produto = await Produto.findOrFail(produtoId)
+      produto.merge(payloadProduto)
+      await produto.save()
+
+      return response.ok(produto)
+    } catch (error) {
+      return response.internalServerError({ erro: 'erro ao atualizar produto' })
     }
   }
 }

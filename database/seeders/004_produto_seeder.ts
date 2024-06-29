@@ -7,7 +7,7 @@ export default class extends BaseSeeder {
     const produtosData = []
     for (let i = 0; i < 30; i++) {
       const produto = {
-        nome: faker.commerce.productName(),
+        nome: faker.commerce.productName().toUpperCase(),
         qtdEstoque: faker.number.int({ min: 0, max: 100 }),
         valorUnitario: parseFloat(faker.commerce.price({ min: 10, max: 4500, dec: 2 })),
       }
