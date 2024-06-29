@@ -12,6 +12,7 @@ export default class extends BaseSchema {
         .references('clientes.id')
         .onDelete('CASCADE')
         .notNullable()
+        table.float('valor_total', 10, 2).notNullable()
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now()).notNullable()
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now()).notNullable()
     })

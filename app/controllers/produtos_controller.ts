@@ -1,5 +1,5 @@
 import Produto from '#models/Produto'
-import { novoProdutoValidador, atualizarProdutoValidador } from '#validators/produto_validador'
+import { novoProdutoValidador, atualizarProdutoValidador } from '#validators/produto_validator'
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 
