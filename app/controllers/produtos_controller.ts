@@ -62,4 +62,9 @@ export default class ProdutosController {
       return response.internalServerError({ erro: 'erro ao atualizar produto' })
     }
   }
+
+  // public async delete({ params, request, response }: HttpContext) {
+  //   try {
+  //   } catch (error) {}
+  // }
 }
