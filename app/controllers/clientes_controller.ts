@@ -1,8 +1,24 @@
 import Cliente from '#models/Cliente'
+import Endereco from '#models/Endereco'
 import { atualizarClienteValidador, novoClienteValidador } from '#validators/cliente_validator'
-import type { HttpContext } from '@adonisjs/core/http'
+import { atualizarEnderecoValidador, novoEnderecoValidador } from '#validators/endereco_validator'
+import type { HttpContext, Request } from '@adonisjs/core/http'
 
 export default class ClientesController {
+  private static obterDadosClienteRequest(request: Request) {
+    const cliente = request.only(['nome', 'sobrenome', 'cpf', 'ddd', 'telefone'])
+    const endereco = request.only([
+      'logradouro',
+      'numero',
+      'complemento',
+      'bairro',
+      'cidade',
+      'uf',
+      'cep',
+    ])
+    return { cliente, endereco }
+  }
+
   public async list({ response }: HttpContext) {
     try {
       const clientes = await Cliente.query()
@@ -24,6 +40,17 @@ export default class ClientesController {
 
       const data = await Cliente.query()
         .where('id', clienteId)
+        .preload('endereco', (queryEndereco) => {
+          queryEndereco.select(
+            'logradouro',
+            'numero',
+            'complemento',
+            'bairro',
+            'cidade',
+            'uf',
+            'cep'
+          )
+        })
         .preload('vendas', (queryVenda) => {
           queryVenda.orderBy('createdAt', 'desc')
           if (mes && ano) {
@@ -40,6 +67,7 @@ export default class ClientesController {
         nome: data.nome,
         sobrenome: data.sobrenome,
         contato: `(${data.ddd})${data.telefone.slice(0, 5)}-${data.telefone.slice(5)}`,
+        endereco: data.endereco,
         compras: data.vendas.map((venda) => ({
           id: venda.id,
           data: new Date(venda.createdAt.toString()).toLocaleDateString('pt-BR', {
@@ -66,28 +94,45 @@ export default class ClientesController {
 
   public async store({ request, response }: HttpContext) {
     try {
-      const cliente = request.only(['nome', 'sobrenome', 'cpf', 'ddd', 'telefone'])
-      const payload = await novoClienteValidador.validate(cliente)
-      const novoCliente = await Cliente.create(payload)
+      const { cliente, endereco } = ClientesController.obterDadosClienteRequest(request)
+
+      const payloadCliente = await novoClienteValidador.validate(cliente)
+      const payloadEndereco = await novoEnderecoValidador.validate(endereco)
+
+      const novoCliente = await Cliente.create(payloadCliente)
+      await Endereco.create({
+        clienteId: novoCliente.id,
+        ...payloadEndereco,
+      })
+
       return response.created(novoCliente)
     } catch (error) {
-      return response.internalServerError({ erro: 'erro ao criar cliente' })
+      return response.internalServerError({ erro: 'erro ao criar cliente', message: error.message })
     }
   }
 
   public async update({ params, request, response }: HttpContext) {
     try {
       const clienteId = params.id
-      const dados = request.only(['nome', 'sobrenome', 'cpf', 'ddd', 'telefone'])
-      const payload = await atualizarClienteValidador.validate(dados)
+      const { cliente, endereco } = ClientesController.obterDadosClienteRequest(request)
 
-      const cliente = await Cliente.findOrFail(clienteId)
-      cliente.merge(payload)
-      await cliente.save()
+      const payloadCliente = await atualizarClienteValidador.validate(cliente)
+      const payloadEndereco = await atualizarEnderecoValidador.validate(endereco)
+
+      const clienteBancoDeDados = await Cliente.findOrFail(clienteId)
+      clienteBancoDeDados.merge(payloadCliente)
+      await clienteBancoDeDados.save()
+
+      const enderecoBancoDeDados = await Endereco.query().where('cliente_id', clienteId).first()
+      enderecoBancoDeDados!.merge(payloadEndereco)
+      await enderecoBancoDeDados?.save()
 
       return response.ok(cliente)
     } catch (error) {
-      return response.internalServerError({ erro: 'erro ao atualizar dados do cliente' })
+      return response.internalServerError({
+        erro: 'erro ao atualizar dados do cliente',
+        message: error.message,
+      })
     }
   }
 

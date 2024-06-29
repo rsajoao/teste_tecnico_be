@@ -18,7 +18,7 @@ export default class extends BaseSeeder {
         bairro: regiaoAdministrativaDF(),
         numero: numero(),
         complemento: complemento(),
-        cidade: 'Brasília',
+        cidade: 'BRASÍLIA',
         uf: 'DF',
         cep: CEP(),
         clienteId: i + 1,

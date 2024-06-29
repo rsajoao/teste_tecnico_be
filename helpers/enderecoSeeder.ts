@@ -60,15 +60,17 @@ export const logradouro = () => {
     logradouros[numAleatorio(logradouros.length)] +
     alfanumeros[numAleatorio(alfanumeros.length)] +
     alfanumeros[numAleatorio(alfanumeros.length)]
-  )
+  ).toUpperCase()
 }
 
 export const regiaoAdministrativaDF = () => {
-  return regioesAdministrativasDF[numAleatorio(regioesAdministrativasDF.length)]
+  return regioesAdministrativasDF[numAleatorio(regioesAdministrativasDF.length)].toUpperCase()
 }
 
 export const complemento = () => {
-  return complementos[numAleatorio(complementos.length)]
+  const compl = complementos[numAleatorio(complementos.length)]
+  if (compl === null) return compl
+  return compl.toUpperCase()
 }
 
 export const numero = () => {
