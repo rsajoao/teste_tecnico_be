@@ -2,10 +2,12 @@ import router from '@adonisjs/core/services/router'
 import UserController from '#controllers/users_controller'
 import ClientesController from '#controllers/clientes_controller'
 import ProdutosController from '#controllers/produtos_controller'
+import VendasController from '#controllers/vendas_controller'
 
 const User = new UserController()
 const Cliente = new ClientesController()
 const Produto = new ProdutosController()
+const Venda = new VendasController()
 
 router.get('/', async () => ({ ok: true }))
 
@@ -22,3 +24,5 @@ router.get('/produtos/show/:id', Produto.show)
 router.post('/produtos/store', Produto.store)
 router.put('/produtos/update/:id', Produto.update)
 router.delete('/produtos/delete/:id', Produto.delete)
+
+router.post('/vendas/register', Venda.register)
