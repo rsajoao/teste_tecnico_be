@@ -16,12 +16,12 @@ export default class VendasController {
 
       const payload = await novaVendaValidador.validate(venda)
 
-      const novaVenda = await Venda.create({ clienteId: payload.clienteId })
-
       const produtosIds = payload.produtos.map((p: ProdutoVendido) => p.produtoId)
-      const produtosDb = await Produto.query().whereIn('id', produtosIds)
+      const produtosDb = await Produto.query().whereIn('id', produtosIds).whereNotNull('deletedAt')
 
       const vendaProdutos = []
+
+      let valorTotal = 0
 
       for (const produto of payload.produtos) {
         const produtoDb = produtosDb.find((p) => p.id === produto.produtoId)
@@ -31,20 +31,24 @@ export default class VendasController {
             erro: `Produto [${produtoDb ? produtoDb.nome : produto.produtoId}] não encontrado ou estoque insuficiente`,
           })
         }
+        const valorProdutoTotal = produtoDb.valorUnitario * produto.quantidade
+        valorTotal += valorProdutoTotal
 
         vendaProdutos.push({
-          vendaId: novaVenda.id,
           produtoId: produto.produtoId,
           quantidade: produto.quantidade,
-          valor: produto.quantidade * produtoDb.valorUnitario,
+          valor: valorProdutoTotal,
         })
 
         produtoDb.qtdEstoque -= produto.quantidade
       }
 
+      const novaVenda = await Venda.create({ clienteId: payload.clienteId, valorTotal })
       await Promise.all([
         ...produtosDb.map((p) => p.save()),
-        VendaProduto.createMany(vendaProdutos),
+        VendaProduto.createMany(
+          vendaProdutos.map((vendaProduto) => ({ ...vendaProduto, vendaId: novaVenda.id }))
+        ),
       ])
 
       return response.ok({ id: novaVenda.id })

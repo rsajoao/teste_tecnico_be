@@ -10,6 +10,9 @@ export default class Venda extends BaseModel {
   @column()
   declare clienteId: number
 
+  @column()
+  declare valorTotal: number
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
