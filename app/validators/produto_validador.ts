@@ -10,12 +10,7 @@ export const novoProdutoValidador = vine.compile(
 
 export const atualizarProdutoValidador = vine.compile(
   vine.object({
-    nome: vine
-      .string()
-      .minLength(6)
-      .maxLength(255)
-      .toUpperCase()
-      .optional(),
+    nome: vine.string().minLength(6).maxLength(255).toUpperCase().optional(),
     qtdEstoque: vine.number().optional(),
     valorUnitario: vine.number().decimal([0, 2]).optional(),
   })

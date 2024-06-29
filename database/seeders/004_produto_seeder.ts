@@ -13,6 +13,16 @@ export default class extends BaseSeeder {
       }
       produtosData.push(produto)
     }
+
+    for (let i = 0; i < 20; i++) {
+      const produtoDeletado = {
+        nome: faker.commerce.productName().toUpperCase(),
+        qtdEstoque: faker.number.int({ min: 0, max: 100 }),
+        valorUnitario: parseFloat(faker.commerce.price({ min: 10, max: 4500, dec: 2 })),
+        deletedAt: '2023-04-12 13:56:25',
+      }
+      produtosData.push(produtoDeletado)
+    }
     await Produto.createMany(produtosData)
   }
 }
