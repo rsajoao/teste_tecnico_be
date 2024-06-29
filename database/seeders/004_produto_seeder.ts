@@ -28,7 +28,7 @@ export default class extends BaseSeeder {
       { nome: 'SOFÁ', qtdEstoque: 4, valorUnitario: 1000.0 },
       { nome: 'DISCO NIRVANA', qtdEstoque: 27, valorUnitario: 99.99 },
       { nome: 'POSTER BOJACK HORSEMAN', qtdEstoque: 69, valorUnitario: 45.50 },
-      { nome: 'ACTION FIGURE SATORO GOJO', qtdEstoque: 1, valorUnitario: 754.12 },
+      { nome: 'ACTION FIGURE SATORU GOJO', qtdEstoque: 1, valorUnitario: 754.12 },
       ...produtosData,
     ])
   }
