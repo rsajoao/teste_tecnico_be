@@ -1,6 +1,7 @@
 import Produto from '#models/Produto'
 import { novoProdutoValidador, atualizarProdutoValidador } from '#validators/produto_validador'
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
 
 export default class ProdutosController {
   public async list({ response }: HttpContext) {
@@ -65,8 +66,14 @@ export default class ProdutosController {
     }
   }
 
-  // public async delete({ params, request, response }: HttpContext) {
-  //   try {
-  //   } catch (error) {}
-  // }
+  public async delete({ params, response }: HttpContext) {
+    try {
+      const produto = await Produto.findOrFail(params.id)
+      produto.deletedAt = DateTime.now()
+      await produto.save()
+      return response.ok({ message: 'produto excluído' })
+    } catch (error) {
+      return response.internalServerError({ erro: 'erro ao excluir produto' })
+    }
+  }
 }
